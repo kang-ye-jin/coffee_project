@@ -44,4 +44,43 @@ public class ProductRepositoryTests {
         Product product = productRepository.findById(productId).orElse(null);
         assertNotNull(product);
     }
+
+
+    @Commit
+    public void testUpdate() {
+        Long productId = 1L;
+        String productName = "New productName";
+        Category category = Category.COFFEE_BEAN_PACKAGE;
+        int price = 13000;
+        String description = "New description";
+
+        Product product = productRepository.findById(productId).orElse(null);
+        assertNotNull(product);
+
+        product.changeProductName(productName);
+        product.changeCategory(category);
+        product.changePrice(price);
+        product.changeDescription(description);
+
+        product = productRepository.findById(productId).orElse(null);
+
+        assertEquals(productName, product.getProductName());
+        assertEquals(category, product.getCategory());
+        assertEquals(price, product.getPrice());
+        assertEquals(description, product.getDescription());
+    }
+
+    //상품 삭제 테스트
+    @Test
+    public void testDelete() {
+        Long productId = 2L;
+        productRepository.deleteById(productId);
+        assertTrue(productRepository.findById(productId).isEmpty());
+    }
+
+    //상품 리스트 테스트
+    @Test
+    public void testFindAll() {
+        productRepository.findAll().forEach(p -> log.info(p.getProductId()));
+    }
 }
