@@ -45,7 +45,7 @@ public class ProductRepositoryTests {
         assertNotNull(product);
     }
 
-
+    //상품 수정 테스트
     @Commit
     public void testUpdate() {
         Long productId = 1L;

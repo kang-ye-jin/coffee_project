@@ -33,7 +33,6 @@ public class ProductDTO {
 
     public Product toEntity() {
         Product product = Product.builder().productId(productId).productName(productName).category(category).price(price).description(description).build();
-
         return product;
     }
 }
