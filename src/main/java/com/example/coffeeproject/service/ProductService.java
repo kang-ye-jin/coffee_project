@@ -27,4 +27,10 @@ public class ProductService {
             throw ProductException.NOT_REGISTERED.get();
         }
     }
+
+    //상품 조회
+    public ProductDTO read(Long id) {
+        Product product = productRepository.findById(id).orElseThrow(ProductException.NOT_FOUND::get);
+        return new ProductDTO(product);
+    }
 }

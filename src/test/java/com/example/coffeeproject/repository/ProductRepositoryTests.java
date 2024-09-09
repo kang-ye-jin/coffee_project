@@ -35,4 +35,13 @@ public class ProductRepositoryTests {
             assertEquals(i, savedProduct.getProductId());
         });
     }
+
+    //상품 조회 테스트
+    @Test
+    @Transactional(readOnly = true)
+    public void testRead() {
+        Long productId = 1L;
+        Product product = productRepository.findById(productId).orElse(null);
+        assertNotNull(product);
+    }
 }
