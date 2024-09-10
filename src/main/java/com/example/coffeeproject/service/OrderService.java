@@ -4,6 +4,7 @@ import com.example.coffeeproject.dto.order.OrderItemResponseDTO;
 import com.example.coffeeproject.dto.order.OrderResponseDTO;
 import com.example.coffeeproject.entity.Order;
 import com.example.coffeeproject.entity.OrderItem;
+import com.example.coffeeproject.entity.OrderStatus;
 import com.example.coffeeproject.entity.Product;
 import com.example.coffeeproject.exception.OrderException;
 import com.example.coffeeproject.exception.ProductException;
@@ -11,9 +12,11 @@ import com.example.coffeeproject.repository.OrderRepository;
 import com.example.coffeeproject.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,11 +59,24 @@ public class OrderService {
         }
     }
 
-    //주문 조회
-    public OrderResponseDTO read(Long id) {
+    //주문 1개 조회
+    public OrderResponseDTO readOrderById(Long id) {
         Order order = orderRepository.findById(id).orElseThrow(OrderException.NOT_FOUND::get);
 
         return new OrderResponseDTO(order);
+    }
+
+    //이메일 별 주문 조회
+    public List<OrderResponseDTO> readOrderByEmail(String email) {
+        List<Order> orders = orderRepository.findByEmail(email);
+        List<OrderResponseDTO> orderResponseDTOs = new ArrayList<>();
+
+        for (Order order : orders) {
+            OrderResponseDTO orderResponseDTO = new OrderResponseDTO(order);
+            orderResponseDTOs.add(orderResponseDTO);
+        }
+
+        return orderResponseDTOs;
     }
 
     //주문 수정
@@ -104,5 +120,37 @@ public class OrderService {
         }
 
         return orderResponseDTOs;
+    }
+
+    //매일 14시에 주문 상태 변경
+    @Scheduled(cron = "0 14 00 * * ?")
+    public void updateOrderStatus() {
+        List<Order> orders = orderRepository.findAll();
+
+        for (Order order : orders) {
+            if (order.getOrderStatus() != OrderStatus.SETTLED && order.getOrderStatus() != OrderStatus.CANCELLED) {
+                order.setOrderStatus(changeStatus(order.getOrderStatus()));
+                order.setUpdatedAt(LocalDateTime.now());
+                orderRepository.save(order);
+            }
+            else if (order.getOrderStatus() == OrderStatus.SETTLED || order.getOrderStatus() == OrderStatus.CANCELLED) {
+                orderRepository.delete(order);
+            }
+        }
+    }
+
+    private OrderStatus changeStatus(OrderStatus status) {
+        switch (status) {
+            case ACCEPTED:
+                return OrderStatus.PAYMENT_CONFIRMED;
+            case PAYMENT_CONFIRMED:
+                return OrderStatus.READY_FOR_DELIVERY;
+            case READY_FOR_DELIVERY:
+                return OrderStatus.SHIPPED;
+            case SHIPPED:
+                return OrderStatus.SETTLED;
+            default:
+                return status;
+        }
     }
 }

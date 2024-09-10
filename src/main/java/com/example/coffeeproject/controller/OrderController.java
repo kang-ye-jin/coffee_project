@@ -28,12 +28,20 @@ public class OrderController {
         return ResponseEntity.ok(orderService.create(orderResponseDTO));
     }
 
-    //주문 조회
-    @GetMapping("/{orderId}")
+    //주문 1개 조회
+    @GetMapping("/Id/{orderId}")
     @Operation(summary = "주문 조회", description = "1개의 주문을 조회할 때 사용하는 API")
     public ResponseEntity<OrderResponseDTO> getOrder(@PathVariable Long orderId) {
         log.info("Get order: {}", orderId);
-        return ResponseEntity.ok(orderService.read(orderId));
+        return ResponseEntity.ok(orderService.readOrderById(orderId));
+    }
+
+    //이메일 별 주문 조회
+    @GetMapping("/email/{email}")
+    @Operation(summary = "이메일 별 주문 조회", description = "이메일 별 주문을 조회할 때 사용하는 API")
+    public ResponseEntity<List<OrderResponseDTO>> getOrder(@PathVariable String email) {
+        log.info("Get order: {}", email);
+        return ResponseEntity.ok(orderService.readOrderByEmail(email));
     }
 
     //주문 수정
