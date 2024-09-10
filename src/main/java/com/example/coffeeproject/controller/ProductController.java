@@ -3,6 +3,8 @@ package com.example.coffeeproject.controller;
 import com.example.coffeeproject.dto.ProductDTO;
 import com.example.coffeeproject.entity.Product;
 import com.example.coffeeproject.service.ProductService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
@@ -15,11 +17,13 @@ import java.util.Map;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/products")
 @Log4j2
+@Tag(name = "상품", description = "상품 CRUD")
 public class ProductController {
     private final ProductService productService;
 
     //상품 등록
     @PostMapping
+    @Operation(summary = "상품 등록", description = "상품을 등록할 때 사용하는 API")
     public ResponseEntity<ProductDTO> register(@RequestBody ProductDTO productDTO) {
         log.info("Registering new product");
         return ResponseEntity.ok(productService.register(productDTO));
@@ -27,6 +31,7 @@ public class ProductController {
 
     //상품 조회
     @GetMapping("/{productId}")
+    @Operation(summary = "상품 조회", description = "상품 1개를 조회할 때 사용하는 API")
     public ResponseEntity<ProductDTO> read(@PathVariable Long productId) {
         log.info("Getting product by ID");
         return ResponseEntity.ok(productService.read(productId));
@@ -34,6 +39,7 @@ public class ProductController {
 
     //상품 수정
     @PutMapping("/{productId}")
+    @Operation(summary = "상품 수정", description = "상품 1개를 수정할 때 사용하는 API")
     public ResponseEntity<ProductDTO> modify(@PathVariable Long productId, @RequestBody ProductDTO productDTO) {
         log.info("Updating product by ID");
         return ResponseEntity.ok(productService.modify(productId, productDTO));
@@ -41,6 +47,7 @@ public class ProductController {
 
     //상품 삭제
     @DeleteMapping("/{productId}")
+    @Operation(summary = "상품 삭제", description = "상품 1개를 삭제할 때 사용하는 API")
     public ResponseEntity<Map<String, String>> remove(@PathVariable Long productId) {
         log.info("Removing product by ID");
         productService.remove(productId);
@@ -49,6 +56,7 @@ public class ProductController {
 
     //상품 리스트
     @GetMapping
+    @Operation(summary = "상품 리스트 조회", description = "상품 리스트를 조회할 때 사용하는 API")
     public ResponseEntity<List<Product>> readAll() {
         log.info("Getting all products");
         return ResponseEntity.ok(productService.readAll());
