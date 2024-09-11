@@ -86,7 +86,6 @@ public class OrderService {
         try {
             order.changeAddress(orderResponseDTO.getAddress());
             order.changePostcode(orderResponseDTO.getPostcode());
-            order.changeOrderStatus(orderResponseDTO.getOrderStatus());
 
             return new OrderResponseDTO(order);
         } catch (Exception e) {

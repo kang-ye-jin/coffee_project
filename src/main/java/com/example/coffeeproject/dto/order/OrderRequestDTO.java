@@ -20,6 +20,4 @@ public class OrderRequestDTO {
 
     @NotEmpty
     private List<OrderItemRequestDTO> orderItems;
-
-    private OrderStatus orderStatus;
 }

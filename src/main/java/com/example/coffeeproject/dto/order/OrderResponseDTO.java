@@ -23,13 +23,13 @@ public class OrderResponseDTO {
         this.email = order.getEmail();
         this.address = order.getAddress();
         this.postcode = order.getPostcode();
-        this.orderStatus = order.getOrderStatus();
+        this.orderStatus = OrderStatus.ACCEPTED;
         this.orderItems = new ArrayList<>();
         order.getOrderItems().forEach(orderItem -> this.orderItems.add(new OrderItemResponseDTO(orderItem)));
     }
 
     public Order toEntity() {
-        Order order = Order.builder().orderId(orderId).email(email).address(address).postcode(postcode).orderStatus(orderStatus).build();
+        Order order = Order.builder().orderId(orderId).email(email).address(address).postcode(postcode).orderStatus(OrderStatus.ACCEPTED).build();
         return order;
     }
 }
