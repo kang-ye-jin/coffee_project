@@ -1,4 +1,4 @@
-package com.example.coffeeproject.dto;
+package com.example.coffeeproject.dto.product;
 
 import com.example.coffeeproject.entity.Category;
 import com.example.coffeeproject.entity.Product;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class ProductDTO {
+public class ProductResponseDTO {
     private Long productId;
 
     @NotBlank
@@ -22,7 +22,7 @@ public class ProductDTO {
 
     private String description;
 
-    public ProductDTO(Product product) {
+    public ProductResponseDTO(Product product) {
         this.productId = product.getProductId();
         this.productName = product.getProductName();
         this.category = product.getCategory();

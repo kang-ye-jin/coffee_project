@@ -1,6 +1,6 @@
 package com.example.coffeeproject.controller;
 
-import com.example.coffeeproject.dto.MemberDTO;
+import com.example.coffeeproject.dto.member.MemberResponseDTO;
 import com.example.coffeeproject.security.util.JWTUtil;
 import com.example.coffeeproject.service.MemberService;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -26,10 +26,10 @@ public class TokenController {
     //토큰 생성
     @PostMapping("/make")
     @Operation(summary = "토큰 생성", description = "회원의 토큰을 생성하는 API")
-    public ResponseEntity<Map<String, Object>> makeToken(@RequestBody MemberDTO memberDTO) {
+    public ResponseEntity<Map<String, Object>> makeToken(@RequestBody MemberResponseDTO memberResponseDTO) {
         log.info("Making token");
 
-        MemberDTO foundMemberDTO = memberService.read(memberDTO.getMid(), memberDTO.getMpw());
+        MemberResponseDTO foundMemberDTO = memberService.read(memberResponseDTO.getMid(), memberResponseDTO.getMpw());
 
         Map<String, Object> payloadMap = foundMemberDTO.getPayload();
         String accessToken = jwtUtil.createToken(payloadMap, 600);
@@ -84,12 +84,12 @@ public class TokenController {
 
         if (!claims.get("mid").equals(mid)) throw new RuntimeException("INVALID REFRESH mid");
 
-        MemberDTO foundMemberDTO = memberService.read(mid);
+        MemberResponseDTO memberResponseDTO = memberService.read(mid);
 
-        Map<String, Object> payloadMap = foundMemberDTO.getPayload();
+        Map<String, Object> payloadMap = memberResponseDTO.getPayload();
 
         String newAccessToken = jwtUtil.createToken(payloadMap, 10);
-        String newRefreshToken = jwtUtil.createToken(Map.of("mid", foundMemberDTO.getMid()), 60 * 24 * 7);
+        String newRefreshToken = jwtUtil.createToken(Map.of("mid", memberResponseDTO.getMid()), 60 * 24 * 7);
 
         return Map.of("accessToken", newAccessToken, "refreshToken", newRefreshToken, "mid", mid);
     }
@@ -123,8 +123,8 @@ public class TokenController {
 
                 if(!claims.get("mid").equals(mid)) return sendResponse("INVALID REFRESH TOKEN mid");
 
-                MemberDTO foundMemberDTO = memberService.read(mid);
-                Map<String, Object> payloadMap = foundMemberDTO.getPayload();
+                MemberResponseDTO memberResponseDTO = memberService.read(mid);
+                Map<String, Object> payloadMap = memberResponseDTO.getPayload();
                 String newAccessToken = jwtUtil.createToken(payloadMap, 1);
                 String newRefreshToken = jwtUtil.createToken(Map.of("mid", mid), 3);
 

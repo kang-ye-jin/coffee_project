@@ -1,7 +1,6 @@
-package com.example.coffeeproject.dto;
+package com.example.coffeeproject.dto.member;
 
 import com.example.coffeeproject.entity.Member;
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,26 +14,16 @@ import java.util.Map;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class MemberDTO {
-    @NotBlank
+public class MemberResponseDTO {
     private String mid;
-
-    @NotBlank
     private String mpw;
-
-    @NotBlank
     private String mname;
-
-    @NotBlank
     private String email;
-
-    @NotBlank
     private String role;
-
     private LocalDateTime joinDate;
     private LocalDateTime modifiedDate;
 
-    public MemberDTO(Member member) {
+    public MemberResponseDTO(Member member) {
         this.mid = member.getMid();
         this.mpw = member.getMpw();
         this.mname = member.getMname();
