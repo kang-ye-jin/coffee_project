@@ -46,6 +46,8 @@ public class ProductRepositoryTests {
     }
 
     //상품 수정 테스트
+    @Test
+    @Transactional
     @Commit
     public void testUpdate() {
         Long productId = 1L;

@@ -29,7 +29,7 @@ public class OrderController {
     }
 
     //주문 1개 조회
-    @GetMapping("/Id/{orderId}")
+    @GetMapping("/id/{orderId}")
     @Operation(summary = "주문 조회", description = "1개의 주문을 조회할 때 사용하는 API")
     public ResponseEntity<OrderResponseDTO> getOrder(@PathVariable Long orderId) {
         log.info("Get order: {}", orderId);

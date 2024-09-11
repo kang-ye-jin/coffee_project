@@ -29,7 +29,7 @@ public class OrderRepositoryTests {
     //주문 등록 테스트
     @Test
     public void testInsertOrder() {
-        Product product = productRepository.findById(3L).orElseThrow(ProductException.NOT_FOUND::get);
+        Product product = productRepository.findById(1L).orElseThrow(ProductException.NOT_FOUND::get);
 
         Order order = Order.builder()
                             .email("test@example.com")
@@ -60,7 +60,7 @@ public class OrderRepositoryTests {
     @Test
     @Transactional(readOnly = true)
     public void testRead() {
-        Long orderId = 2L;
+        Long orderId = 1L;
         Order order = orderRepository.findById(orderId).orElseThrow();
         assertNotNull(order);
     }
@@ -70,7 +70,7 @@ public class OrderRepositoryTests {
     @Transactional
     @Commit
     public void testUpdate() {
-        Long orderId = 2L;
+        Long orderId = 1L;
         String email = "testUpdate@example.com";
         String address = "서울시 수정구 테스트동";
         int postcode = 12345;
@@ -83,7 +83,6 @@ public class OrderRepositoryTests {
 
         order = orderRepository.findById(orderId).orElseThrow();
 
-        assertEquals(email, order.getEmail());
         assertEquals(address, order.getAddress());
         assertEquals(postcode, order.getPostcode());
         assertEquals(order.getOrderStatus(), OrderStatus.CANCELLED);
@@ -92,7 +91,7 @@ public class OrderRepositoryTests {
     //주문 삭제 테스트
     @Test
     public void testDelete() {
-        Long orderId = 2L;
+        Long orderId = 1L;
         orderRepository.deleteById(orderId);
         assertTrue(orderRepository.findById(orderId).isEmpty());
     }

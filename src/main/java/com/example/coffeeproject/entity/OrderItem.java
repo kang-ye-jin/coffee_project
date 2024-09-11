@@ -27,8 +27,10 @@ public class OrderItem {
     private Order order;
 
     @Enumerated(EnumType.STRING)
+    @NotNull
     private Category category;
 
+    @NotNull
     private int price;
 
     @NotNull

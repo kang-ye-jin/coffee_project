@@ -3,7 +3,7 @@ package com.example.coffeeproject.dto;
 import com.example.coffeeproject.entity.Category;
 import com.example.coffeeproject.entity.Product;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,10 +12,9 @@ import lombok.NoArgsConstructor;
 public class ProductDTO {
     private Long productId;
 
-    @NotEmpty
+    @NotBlank
     private String productName;
 
-    @NotEmpty
     private Category category;
 
     @Min(0)

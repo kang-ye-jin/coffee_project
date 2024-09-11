@@ -1,6 +1,8 @@
 package com.example.coffeeproject.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,12 +25,17 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long productId;
 
+    @NotNull
     private String productName;
 
     @Enumerated(EnumType.STRING)
+    @NotNull
     private Category category;
 
+    @Min(0)
+    @NotNull
     private int price;
+
     private String description;
 
     @CreatedDate
