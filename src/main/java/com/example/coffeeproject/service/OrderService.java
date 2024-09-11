@@ -128,8 +128,7 @@ public class OrderService {
 
         for (Order order : orders) {
             if (order.getOrderStatus() != OrderStatus.SETTLED && order.getOrderStatus() != OrderStatus.CANCELLED) {
-                order.setOrderStatus(changeStatus(order.getOrderStatus()));
-                order.setUpdatedAt(LocalDateTime.now());
+                order.changeOrderStatus(changeStatus(order.getOrderStatus()));
                 orderRepository.save(order);
             }
             else if (order.getOrderStatus() == OrderStatus.SETTLED || order.getOrderStatus() == OrderStatus.CANCELLED) {
