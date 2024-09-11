@@ -2,13 +2,13 @@ package com.example.coffeeproject.dto.order;
 
 import com.example.coffeeproject.entity.Order;
 import com.example.coffeeproject.entity.OrderStatus;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
+@Getter
 @NoArgsConstructor
 public class OrderResponseDTO {
     private Long orderId;

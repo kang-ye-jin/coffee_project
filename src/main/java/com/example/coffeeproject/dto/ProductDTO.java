@@ -4,10 +4,10 @@ import com.example.coffeeproject.entity.Category;
 import com.example.coffeeproject.entity.Product;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Data
+@Getter
 @NoArgsConstructor
 public class ProductDTO {
     private Long productId;

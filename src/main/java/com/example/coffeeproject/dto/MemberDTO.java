@@ -4,15 +4,15 @@ import com.example.coffeeproject.entity.Member;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
-@Data
 @Builder
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 public class MemberDTO {
