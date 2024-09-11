@@ -42,6 +42,7 @@ public class ProductRepositoryTests {
     public void testRead() {
         Long productId = 1L;
         Product product = productRepository.findById(productId).orElse(null);
+
         assertNotNull(product);
     }
 
@@ -57,6 +58,7 @@ public class ProductRepositoryTests {
         String description = "New description";
 
         Product product = productRepository.findById(productId).orElse(null);
+
         assertNotNull(product);
 
         product.changeProductName(productName);
@@ -76,7 +78,9 @@ public class ProductRepositoryTests {
     @Test
     public void testDelete() {
         Long productId = 2L;
+
         productRepository.deleteById(productId);
+
         assertTrue(productRepository.findById(productId).isEmpty());
     }
 

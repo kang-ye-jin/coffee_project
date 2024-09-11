@@ -11,7 +11,7 @@ import java.util.Map;
 
 @RestControllerAdvice
 @Log4j2
-public class APIController {
+public class APIControllerAdvice {
     @ExceptionHandler(ProductTaskException.class)
     public ResponseEntity<Map<String, String>> handleException(ProductTaskException e) {
         log.info("--- ProductTaskException");
