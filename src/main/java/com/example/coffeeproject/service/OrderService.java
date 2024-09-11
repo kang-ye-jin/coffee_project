@@ -48,7 +48,7 @@ public class OrderService {
                 orderItems.add(orderItem);
             }
 
-            order.setOrderItems(orderItems);
+            order.updateOrderItems(orderItems);
 
             orderRepository.save(order);
 

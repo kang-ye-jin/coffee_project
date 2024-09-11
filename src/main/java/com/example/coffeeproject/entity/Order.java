@@ -59,7 +59,7 @@ public class Order {
         this.orderStatus = OrderStatus.ACCEPTED;
     }
 
-    public void setOrderItems(List<OrderItem> orderItems) {
+    public void updateOrderItems(List<OrderItem> orderItems) {
         this.orderItems = orderItems;
     }
 }
