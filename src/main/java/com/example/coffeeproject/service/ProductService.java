@@ -1,11 +1,15 @@
 package com.example.coffeeproject.service;
 
+import com.example.coffeeproject.dto.page.PageRequestDTO;
 import com.example.coffeeproject.dto.product.ProductResponseDTO;
 import com.example.coffeeproject.entity.Product;
 import com.example.coffeeproject.exception.ProductException;
 import com.example.coffeeproject.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -66,8 +70,10 @@ public class ProductService {
     }
 
     //상품 리스트
-    public List<Product> readAll() {
-        List<Product> products = productRepository.findAll();
+    public Page<Product> readAll(PageRequestDTO pageRequestDTO) {
+        Sort sort = Sort.by("productId").ascending();
+        Pageable pageable = pageRequestDTO.getPageable(sort);
+        Page<Product> products = productRepository.findAll(pageable);
         return products;
     }
 }

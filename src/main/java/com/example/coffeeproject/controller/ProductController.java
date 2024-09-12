@@ -1,5 +1,6 @@
 package com.example.coffeeproject.controller;
 
+import com.example.coffeeproject.dto.page.PageRequestDTO;
 import com.example.coffeeproject.dto.product.ProductResponseDTO;
 import com.example.coffeeproject.entity.Product;
 import com.example.coffeeproject.service.ProductService;
@@ -7,6 +8,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -54,11 +56,16 @@ public class ProductController {
         return ResponseEntity.ok(Map.of("result", "success"));
     }
 
-    //상품 리스트
+    // 상품 리스트 조회
     @GetMapping
     @Operation(summary = "상품 리스트 조회", description = "상품 리스트를 조회할 때 사용하는 API")
-    public ResponseEntity<List<Product>> readAll() {
+    public ResponseEntity<Page<Product>> readAll(@RequestParam(defaultValue = "1") int page,
+                                                 @RequestParam(defaultValue = "5") int size) {
         log.info("Getting all products");
-        return ResponseEntity.ok(productService.readAll());
+
+        PageRequestDTO pageRequestDTO = PageRequestDTO.builder().page(page).size(size).build();
+
+        Page<Product> productPage = productService.readAll(pageRequestDTO);
+        return ResponseEntity.ok(productPage);
     }
 }
