@@ -16,7 +16,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,27 +27,48 @@ public class OrderService {
     private final ProductRepository productRepository;
     private final OrderRepository orderRepository;
 
+    //주문 등록
     public OrderResponseDTO create(OrderResponseDTO orderResponseDTO) {
         try {
-            Order order = orderResponseDTO.toEntity();
+            List<Order> foundOrders = orderRepository.findByEmail(orderResponseDTO.getEmail());
+
+            Order foundOrder = null;
+
+            for (Order order : foundOrders) {
+                //주문 상태 체크
+                if (order.getOrderStatus() == OrderStatus.ACCEPTED || order.getOrderStatus() == OrderStatus.PAYMENT_CONFIRMED || order.getOrderStatus() == OrderStatus.READY_FOR_DELIVERY) {
+                    foundOrder = order;
+                    break;
+                }
+            }
+
+            Order order;
+
+            if (foundOrder == null) {
+                order = orderResponseDTO.toEntity();
+            } else {
+                order = foundOrder;
+            }
 
             List<OrderItem> orderItems = new ArrayList<>();
 
             for (OrderItemResponseDTO orderItemResponseDTO : orderResponseDTO.getOrderItems()) {
-                Product product = productRepository.findById(orderItemResponseDTO.getProductId()).orElseThrow(ProductException.NOT_FOUND::get);
+                Product product = productRepository.findById(orderItemResponseDTO.getProductId())
+                        .orElseThrow(ProductException.NOT_FOUND::get);
 
                 OrderItem orderItem = OrderItem.builder()
-                        .product(product)
-                        .order(order)
-                        .category(product.getCategory())
-                        .price(product.getPrice())
-                        .quantity(orderItemResponseDTO.getQuantity())
-                        .build();
+                                                .product(product)
+                                                .order(order)
+                                                .category(product.getCategory())
+                                                .price(product.getPrice())
+                                                .quantity(orderItemResponseDTO.getQuantity())
+                                                .build();
 
                 orderItems.add(orderItem);
             }
 
-            order.updateOrderItems(orderItems);
+            if (foundOrder == null) order.updateOrderItems(orderItems);
+            else order.addOrderItems(orderItems);
 
             orderRepository.save(order);
 
