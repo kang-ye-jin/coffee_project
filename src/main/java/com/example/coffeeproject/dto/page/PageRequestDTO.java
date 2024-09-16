@@ -2,15 +2,11 @@ package com.example.coffeeproject.dto.page;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.NoArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
-@NoArgsConstructor
-@AllArgsConstructor
 @Builder
 public class PageRequestDTO {
     @Builder.Default
